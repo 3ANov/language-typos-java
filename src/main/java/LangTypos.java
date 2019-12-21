@@ -27,7 +27,7 @@ public class LangTypos {
             .put('k', 'л')
             .put('l', 'д')
             .put(';', 'ж')
-            .put('\'', 'э')
+            .put('\'','э')
             .put('z', 'я')
             .put('x', 'ч')
             .put('c', 'с')
@@ -38,7 +38,6 @@ public class LangTypos {
             .put(',', 'б')
             .put('.', 'ю')
             .put('/', '.')
-
             .put('~', 'Ё')
             .put('@', '"')
             .put('#', '№')
@@ -79,26 +78,26 @@ public class LangTypos {
             .put('<', 'Б')
             .put('>', 'Ю')
             .put('?', ',')
+            .put(' ', ' ')
             .build();
 
     static ImmutableBiMap<Object, Object> rusToEn = enToRus.inverse();
 
-    public static String convert(String string, String input, String output) {
+    public static String convertLayout(String string, String input, String output) {
 
         String result = "";
 
-        if (input == "en" & output == "ru") {
+        if (input.equals("en") & output.equals("ru")) {
             for (int i = 0; i < string.length(); i++) {
                 result += enToRus.get(string.charAt(i));
             }
         }
 
-        if (input == "ru" & output == "en") {
+        if (input.equals("ru") & output.equals("en")) {
             for (int i = 0; i < string.length(); i++) {
                 result += rusToEn.get(string.charAt(i));
             }
         }
-
 
         return result;
     }
