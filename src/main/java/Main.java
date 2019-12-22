@@ -8,9 +8,27 @@ import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
-/*
+
         LangTypos converter = new LangTypos();
 
+        String inp = "Vfvf мыла hfve Лфззф";
+        System.out.println(converter.convertString(inp));
+        inp = "И Сережа тоже";
+        System.out.println(converter.convertString(inp));
+        inp = "Dvtcnt c k.,jq 'njq";
+        System.out.println(converter.convertString(inp));
+        inp = "<hfkb dc` r j,tle>";
+        System.out.println(converter.convertString(inp));
+        inp = "И говорил руддщ цщкдв фтщерук";
+        System.out.println(converter.convertString(inp));
+        inp = "ьфтн нуфкы пщ";
+        System.out.println(converter.convertString(inp));
+        inp = "Vfvf мыла hfve Лфззф";
+        System.out.println(converter.convertString(inp));
+        System.out.println(converter.containsWord("<hfkb"));
+
+
+        /*
         Map<String,String> dict = new HashMap<>();
 
 

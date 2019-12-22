@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="language-typos-java" target="8" />
+      <module name="language-typos-java" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

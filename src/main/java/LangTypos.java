@@ -1,12 +1,25 @@
-import com.google.common.collect.BiMap;
-import com.google.common.collect.HashBiMap;
 import com.google.common.collect.ImmutableBiMap;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class LangTypos {
 
 
     ImmutableBiMap<Object, Object> enToRus;
     ImmutableBiMap<Object, Object> rusToEn;
+
+    Map<String, Object> dictRuToEn;
+    Map<String, Object> dictEnToRu;
+
+
 
    public LangTypos(){
        enToRus = new ImmutableBiMap.Builder<>()
@@ -88,26 +101,109 @@ public class LangTypos {
                .build();
 
        rusToEn = enToRus.inverse();
+
+
+      loadDictionaries();
+
+
+   }
+
+   private void loadDictionaries(){
+
+       try (BufferedReader fileRuToEn = new BufferedReader(new InputStreamReader(
+               Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                       .getResourceAsStream("dictRuToEn.json"))))) {
+           String response = fileRuToEn.lines().collect(Collectors.joining());
+           JSONObject jObject = new JSONObject(response); // json
+           dictRuToEn = jObject.toMap();
+           //System.out.println(jObject.toMap().get("оренбургская"));
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+       
+       try (BufferedReader fileEnToRu = new BufferedReader(new InputStreamReader(
+               Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                       .getResourceAsStream("dictEnToRu.json"))))) {
+           String response = fileEnToRu.lines().collect(Collectors.joining());
+           JSONObject jObject = new JSONObject(response); // json
+           dictEnToRu = jObject.toMap();
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+
    }
 
     public String convertLayout(String string, String input, String output) {
 
-        String result = "";
+        StringBuilder result = new StringBuilder();
 
         if (input.equals("en") & output.equals("ru")) {
             for (int i = 0; i < string.length(); i++) {
-                result += enToRus.get(string.charAt(i));
+                //result += enToRus.get(string.charAt(i));
+                result.append(enToRus.get(string.charAt(i)));
             }
         }
 
         if (input.equals("ru") & output.equals("en")) {
             for (int i = 0; i < string.length(); i++) {
-                result += rusToEn.get(string.charAt(i));
+                //result += rusToEn.get(string.charAt(i));
+                result.append(rusToEn.get(string.charAt(i)));
             }
         }
 
-        return result;
+        return result.toString();
     }
 
+    public String convertString(String message) {
+        StringBuilder result = new StringBuilder();
+        String  message_clone;
+        Pattern enPattern = Pattern.compile("[a-zA-Z]");
+        Matcher enMatcher = enPattern.matcher(message);
+        Pattern ruPattern = Pattern.compile("[а-бА-Б]");
+        Matcher ruMatcher = ruPattern.matcher(message);
 
+        if (enMatcher.find()){
+            message_clone = convertLayout(message,"en","ru");
+        }
+
+        if (ruMatcher.find()){
+            message_clone = convertLayout(message,"en","ru");
+        }
+
+
+        for (String word:message.split(" ")) {
+           if(dictRuToEn.containsKey(word.toLowerCase()) || dictEnToRu.containsKey(word.toLowerCase())){
+               result.append(word);
+               result.append(" ");
+            }
+           else if(dictRuToEn.containsValue(word.toLowerCase())){
+               result.append(convertLayout(word,"en","ru"));
+               result.append(" ");
+           }
+           else if(dictEnToRu.containsValue(word.toLowerCase())){
+               result.append(convertLayout(word,"ru","en"));
+               result.append(" ");
+           }
+
+           else {
+               result.append(word);
+               result.append(" ");
+           }
+        }
+
+       return result.toString().trim();
+    }
+
+    public boolean containsWord(String word){
+        if(dictRuToEn.containsValue(word.toLowerCase()))
+            return true;
+        if(dictEnToRu.containsValue(word.toLowerCase()))
+            return true;
+       if(dictRuToEn.containsKey(word.toLowerCase()))
+           return true;
+       if(dictEnToRu.containsKey(word.toLowerCase()))
+           return true;
+       return false;
+    }
 }
