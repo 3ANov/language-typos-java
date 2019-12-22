@@ -17,7 +17,7 @@ public class Main {
         System.out.println(converter.convertString(inp));
         inp = "Dvtcnt c k.,jq 'njq";
         System.out.println(converter.convertString(inp));
-        inp = "<hfkb dc` r j,tle>";
+        inp = "<hfkb dc` r j,tle";
         System.out.println(converter.convertString(inp));
         inp = "И говорил руддщ цщкдв фтщерук";
         System.out.println(converter.convertString(inp));
@@ -25,7 +25,10 @@ public class Main {
         System.out.println(converter.convertString(inp));
         inp = "Vfvf мыла hfve Лфззф";
         System.out.println(converter.convertString(inp));
-        System.out.println(converter.containsWord("<hfkb"));
+
+
+
+        //System.out.println(converter.containsWord(converter.convertLayout("<hfkb","en","ru")));
 
 
         /*
