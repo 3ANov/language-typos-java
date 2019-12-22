@@ -24,7 +24,6 @@ public class LangTypos {
 
     public LangTypos() {
         enToRus = HashBiMap.create();
-
         enToRus.put('`', 'ё');
         enToRus.put('q', 'й');
         enToRus.put('w', 'ц');
