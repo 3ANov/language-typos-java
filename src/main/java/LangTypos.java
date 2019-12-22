@@ -136,10 +136,20 @@ public class LangTypos {
 
     }
 
-    public String convertLayout(String string, String input, String output) {
+    public String convertLayout(String string) {
+
 
        resultWord.delete(0,resultWord.length());
+        for (int i = 0; i < string.length(); i++) {
+           if(enToRus.containsKey(string.charAt(i))){
+               resultWord.append(enToRus.get(string.charAt(i)));
+           }
+           else if(rusToEn.containsKey(string.charAt(i))){
+                resultWord.append(rusToEn.get(string.charAt(i)));
+            }
+        }
 
+/*
         if (input.equals("en") & output.equals("ru")) {
             for (int i = 0; i < string.length(); i++) {
                 //result += enToRus.get(string.charAt(i));
@@ -153,6 +163,8 @@ public class LangTypos {
                 resultWord.append(rusToEn.get(string.charAt(i)));
             }
         }
+*/
+
 
         return  resultWord.toString();
     }
@@ -161,32 +173,20 @@ public class LangTypos {
 
 
         resultMessage.delete(0, resultMessage.length());
-        /*
-        String  message_clone;
-        Pattern enPattern = Pattern.compile("[a-zA-Z]");
-        Matcher enMatcher = enPattern.matcher(message);
-        Pattern ruPattern = Pattern.compile("[а-бА-Б]");
-        Matcher ruMatcher = ruPattern.matcher(message);
-*/
-
 
         for (String word : message.split(" ")) {
-
             if (dictRuToEn.containsKey(word.toLowerCase()) || dictEnToRu.containsKey(word.toLowerCase())) {
                 resultMessage.append(word);
-                resultMessage.append(" ");
             } else if (dictRuToEn.containsValue(word.toLowerCase()) ||
-                    dictRuToEn.containsKey(convertLayout(word, "en", "ru").toLowerCase())) {
-                resultMessage.append(convertLayout(word, "en", "ru"));
-                resultMessage.append(" ");
+                    dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
+                resultMessage.append(convertLayout(word));
             } else if (dictEnToRu.containsValue(word.toLowerCase()) ||
-                    dictRuToEn.containsKey(convertLayout(word, "ru", "en").toLowerCase())) {
-                resultMessage.append(convertLayout(word, "ru", "en"));
-                resultMessage.append(" ");
+                    dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
+                resultMessage.append(convertLayout(word));
             } else {
                 resultMessage.append(word);
-                resultMessage.append(" ");
             }
+            resultMessage.append(" ");
         }
 
         return resultMessage.toString().trim();

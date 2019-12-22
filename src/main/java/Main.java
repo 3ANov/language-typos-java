@@ -13,6 +13,8 @@ public class Main {
 
         String inp = "Vfvf мыла hfve Лфззф";
         System.out.println(converter.convertString(inp));
+        //System.out.println(converter.convertString(inp));
+        /*
         inp = "И Сережа тоже";
         System.out.println(converter.convertString(inp));
         inp = "Dvtcnt c k.,jq 'njq";
