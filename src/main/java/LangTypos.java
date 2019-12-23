@@ -1,13 +1,24 @@
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
+
+import java.io.*;
+import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class LangTypos {
 
@@ -15,8 +26,8 @@ public class LangTypos {
     BiMap<Character, Character> enToRus;
     BiMap<Character, Character> rusToEn;
 
-    Map<String, Object> dictRuToEn;
-    Map<String, Object> dictEnToRu;
+    Map<String, String> dictRuToEn;
+    Map<String, String> dictEnToRu;
 
     StringBuilder resultMessage;
     StringBuilder resultWord;
@@ -111,7 +122,37 @@ public class LangTypos {
     }
 
     private void loadDictionaries() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            dictRuToEn = mapper.readValue(new InputStreamReader(
+                    Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                            .getResourceAsStream("dictRuToEn.json"))), new TypeReference<Map<String, String>>() {
+            });
+            dictEnToRu = mapper.readValue(new InputStreamReader(
+                    Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                            .getResourceAsStream("dictEnToRu.json"))), new TypeReference<Map<String, String>>() {
+            });
 
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    /* TODO: Эксперимент с GSON'ом
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<Map<String, String>>(){}.getType();
+
+        dictRuToEn = gson.fromJson( new InputStreamReader(
+                Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                        .getResourceAsStream("dictRuToEn.json"))), type);
+
+        dictEnToRu = gson.fromJson(new InputStreamReader(
+                Objects.requireNonNull(ClassLoader.getSystemClassLoader()
+                        .getResourceAsStream("dictEnToRu.json"))), type);
+
+       */
+
+        /* TODO: Эксперимент с JSON'ом
         try (BufferedReader fileRuToEn = new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(ClassLoader.getSystemClassLoader()
                         .getResourceAsStream("dictRuToEn.json"))))) {
@@ -132,7 +173,7 @@ public class LangTypos {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+*/
 
     }
 
@@ -170,7 +211,6 @@ public class LangTypos {
     }
 
     public String convertString(String message) {
-
 
         resultMessage.delete(0, resultMessage.length());
 

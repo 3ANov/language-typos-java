@@ -3,16 +3,32 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 
 public class Main {
     public static void main(String[] args) {
 
-        LangTypos converter = new LangTypos();
 
-        String inp = "Vfvf мыла hfve Лфззф";
-        System.out.println(converter.convertString(inp));
+
+       LangTypos converter = new LangTypos();
+
+        Scanner input = new Scanner(System.in);
+
+
+        while (true) {
+            if ( input.equals("q") )
+            {
+                break; // exit infinite loop
+            }
+            System.out.println("Введите строку");
+            System.out.println(converter.convertString(input.nextLine()));
+            System.out.println();
+
+        }
+
+
         //System.out.println(converter.convertString(inp));
         /*
         inp = "И Сережа тоже";
