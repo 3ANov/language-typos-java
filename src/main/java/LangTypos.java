@@ -10,13 +10,11 @@ import com.google.gson.JsonParser;
 import org.json.JSONObject;
 
 
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -116,21 +114,24 @@ public class LangTypos {
         resultMessage = new StringBuilder();
         resultWord = new StringBuilder();
 
-        loadDictionaries();
+
+
+
 
 
     }
 
-    private void loadDictionaries() {
+    public void loadDictionaries() {
         ObjectMapper mapper = new ObjectMapper();
+
         try {
             dictRuToEn = mapper.readValue(new InputStreamReader(
                     Objects.requireNonNull(ClassLoader.getSystemClassLoader()
-                            .getResourceAsStream("dictRuToEn.json"))), new TypeReference<Map<String, String>>() {
+                            .getResourceAsStream("dictRuToEn-mini.json"))), new TypeReference<HashMap<String, String>>() {
             });
             dictEnToRu = mapper.readValue(new InputStreamReader(
                     Objects.requireNonNull(ClassLoader.getSystemClassLoader()
-                            .getResourceAsStream("dictEnToRu.json"))), new TypeReference<Map<String, String>>() {
+                            .getResourceAsStream("dictEnToRu.json"))), new TypeReference<HashMap<String, String>>() {
             });
 
         } catch (IOException e) {
@@ -180,13 +181,15 @@ public class LangTypos {
     public String convertLayout(String string) {
 
 
-       resultWord.delete(0,resultWord.length());
+        resultWord.delete(0, resultWord.length());
         for (int i = 0; i < string.length(); i++) {
-           if(enToRus.containsKey(string.charAt(i))){
-               resultWord.append(enToRus.get(string.charAt(i)));
-           }
-           else if(rusToEn.containsKey(string.charAt(i))){
+            if (enToRus.containsKey(string.charAt(i))) {
+                resultWord.append(enToRus.get(string.charAt(i)));
+            } else if (rusToEn.containsKey(string.charAt(i))) {
                 resultWord.append(rusToEn.get(string.charAt(i)));
+            }
+            else {
+                resultWord.append(string.charAt(i));
             }
         }
 
@@ -207,7 +210,7 @@ public class LangTypos {
 */
 
 
-        return  resultWord.toString();
+        return resultWord.toString();
     }
 
     public String convertString(String message) {
@@ -223,7 +226,13 @@ public class LangTypos {
             } else if (dictEnToRu.containsValue(word.toLowerCase()) ||
                     dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
                 resultMessage.append(convertLayout(word));
-            } else {
+            } else if(!dictRuToEn.containsKey(word.toLowerCase())){
+                resultMessage.append(convertLayout(word));
+            }
+            else if(!dictEnToRu.containsKey(word.toLowerCase())){
+                resultMessage.append(convertLayout(word));
+            }
+            else {
                 resultMessage.append(word);
             }
             resultMessage.append(" ");

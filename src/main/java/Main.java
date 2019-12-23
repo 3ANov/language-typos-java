@@ -1,9 +1,7 @@
 import org.json.JSONObject;
+
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -11,20 +9,23 @@ public class Main {
     public static void main(String[] args) {
 
 
-
-       LangTypos converter = new LangTypos();
+        LangTypos converter = new LangTypos();
+        converter.loadDictionaries();
 
         Scanner input = new Scanner(System.in);
 
 
         while (true) {
-            if ( input.equals("q") )
-            {
-                break; // exit infinite loop
-            }
             System.out.println("Введите строку");
-            System.out.println(converter.convertString(input.nextLine()));
+            String message = input.nextLine();
+            if(message.equals("q")){
+                break;
+            }
+            System.out.println(converter.convertString(message));
             System.out.println();
+
+
+
 
         }
 
@@ -85,7 +86,8 @@ public class Main {
 
 
 /*TODO:Работает
-
+ */
+/*
         LangTypos converter = new LangTypos();
 
         Map<String,String> dict = new HashMap<>();
@@ -95,12 +97,12 @@ public class Main {
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(ClassLoader.getSystemClassLoader()
-                        .getResourceAsStream("russian.txt"))))) {
+                        .getResourceAsStream("zdf-win.txt"))))) {
 
             String line;
 
             while ((line = br.readLine()) != null) {
-                dict.put(line,converter.convertLayout(line,"ru","en"));
+                dict.put(line,converter.convertLayout(line));
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -111,7 +113,7 @@ public class Main {
         JSONObject jsonDict = new JSONObject(dict); // json
 
 
-        try (FileWriter file = new FileWriter("dictRuToEn.json",false)) {
+        try (FileWriter file = new FileWriter("dictRuToEn-mini.json",false)) {
 
             file.write(jsonDict.toString());
             file.flush();
@@ -119,7 +121,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-*/
+
 /* TODO:Работает
 
         try (BufferedReader reader = new BufferedReader(new FileReader("dictRuToEn.json"))) {
@@ -151,8 +153,6 @@ public class Main {
         }
 
  */
-
-
 
 
     }
