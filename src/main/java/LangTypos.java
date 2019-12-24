@@ -27,6 +27,8 @@ public class LangTypos {
     Map<String, String> dictRuToEn;
     Map<String, String> dictEnToRu;
 
+    List<String> morfRuDict;
+
     StringBuilder resultMessage;
     StringBuilder resultWord;
 
@@ -115,10 +117,6 @@ public class LangTypos {
         resultWord = new StringBuilder();
 
 
-
-
-
-
     }
 
     public void loadDictionaries() {
@@ -129,10 +127,16 @@ public class LangTypos {
                     Objects.requireNonNull(ClassLoader.getSystemClassLoader()
                             .getResourceAsStream("dictRuToEn-mini.json"))), new TypeReference<HashMap<String, String>>() {
             });
+            morfRuDict = new ArrayList<>();
+            for (String key:dictRuToEn.keySet()) {
+                morfRuDict.add(Porter.stem(key));
+            }
+
             dictEnToRu = mapper.readValue(new InputStreamReader(
                     Objects.requireNonNull(ClassLoader.getSystemClassLoader()
                             .getResourceAsStream("dictEnToRu.json"))), new TypeReference<HashMap<String, String>>() {
             });
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -187,8 +191,7 @@ public class LangTypos {
                 resultWord.append(enToRus.get(string.charAt(i)));
             } else if (rusToEn.containsKey(string.charAt(i))) {
                 resultWord.append(rusToEn.get(string.charAt(i)));
-            }
-            else {
+            } else {
                 resultWord.append(string.charAt(i));
             }
         }
@@ -218,38 +221,60 @@ public class LangTypos {
         resultMessage.delete(0, resultMessage.length());
 
         for (String word : message.split(" ")) {
-            if (dictRuToEn.containsKey(word.toLowerCase()) || dictEnToRu.containsKey(word.toLowerCase())) {
-                resultMessage.append(word);
-            } else if (dictRuToEn.containsValue(word.toLowerCase()) ||
-                    dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
-                resultMessage.append(convertLayout(word));
-            } else if (dictEnToRu.containsValue(word.toLowerCase()) ||
-                    dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
-                resultMessage.append(convertLayout(word));
-            } else if(!dictRuToEn.containsKey(word.toLowerCase())){
+
+            //если слово в правильной расскладке найдено в словарях по ключу
+            if (dictEnToRu.containsKey(word.toLowerCase())) {
+                resultMessage.append(word);//то возвращаем его без изменений
+            }
+            else if (dictRuToEn.containsValue(word.toLowerCase())) { //если слово на английском найдено в другой расскладке в словаре
+                resultMessage.append(convertLayout(word)); //то конвертируем его
+            }
+            else if (dictEnToRu.containsValue(word.toLowerCase())) {//если слово на русском найдено в другой расскладке в словаре
                 resultMessage.append(convertLayout(word));
             }
-            else if(!dictEnToRu.containsKey(word.toLowerCase())){
-                resultMessage.append(convertLayout(word));
+            else { // по идее не нужна - надо придумывать чтото со словообразованием
+                //если слово найдено в словаре словообразования - вернуть его в другой кодировке
+                String reverse = convertLayout(word);
+                if(morfRuDict.contains(Porter.stem(reverse))){
+                    resultMessage.append(reverse);
+                }
+                else {
+                    resultMessage.append(word);
+                }
+
             }
-            else {
-                resultMessage.append(word);
-            }
+
             resultMessage.append(" ");
         }
 
         return resultMessage.toString().trim();
     }
 
-    public boolean containsWord(String word) {
-        if (dictRuToEn.containsValue(word.toLowerCase()))
+
+
+    /*как было до*/
+    public boolean isCorrectWord(String word) {
+        if (dictRuToEn.containsKey(word.toLowerCase()) || dictEnToRu.containsKey(word.toLowerCase())) {
             return true;
-        if (dictEnToRu.containsValue(word.toLowerCase()))
+        } else if (dictRuToEn.containsValue(word.toLowerCase()) ||
+                dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
+            return false;
+        } else if (dictEnToRu.containsValue(word.toLowerCase()) ||
+                dictRuToEn.containsKey(convertLayout(word).toLowerCase())) {
+            return false;
+        } else if (!dictRuToEn.containsKey(word.toLowerCase())) {
+            return false;
+        } else if (!dictEnToRu.containsKey(word.toLowerCase())) {
+            return false;
+        } else {
             return true;
-        if (dictRuToEn.containsKey(word.toLowerCase()))
-            return true;
-        if (dictEnToRu.containsKey(word.toLowerCase()))
-            return true;
-        return false;
+        }
     }
+
+    public void viewDict(){
+        for (String word:morfRuDict) {
+            System.out.println(word);
+        }
+    }
+
 }

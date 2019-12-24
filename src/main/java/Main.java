@@ -1,18 +1,34 @@
-import org.json.JSONObject;
-
-import java.io.*;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 public class Main {
     public static void main(String[] args) {
 
 
-        LangTypos converter = new LangTypos();
-        converter.loadDictionaries();
+        /*
+        try (BufferedReader reader = new BufferedReader(new FileReader("rusDict-new.txt"));
+        FileWriter file = new FileWriter("morfRu.txt",false)){
+
+            String line;
+
+
+            while ((line = reader.readLine()) != null) {
+
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+*/
+     LangTypos converter = new LangTypos();
+     converter.loadDictionaries();
+     //converter.viewDict();
+
+
 
         Scanner input = new Scanner(System.in);
+
 
 
         while (true) {
@@ -21,6 +37,10 @@ public class Main {
             if(message.equals("q")){
                 break;
             }
+
+
+            //System.out.println(Porter.stem(message));
+            //System.out.println(message.matches("[\\w|\\W]\\p{InCyrillic}"));
             System.out.println(converter.convertString(message));
             System.out.println();
 
