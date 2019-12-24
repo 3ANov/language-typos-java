@@ -27,7 +27,7 @@ public class LangTypos {
     Map<String, String> dictRuToEn;
     Map<String, String> dictEnToRu;
 
-    List<String> morfRuDict;
+    HashSet<String> morfRuDict;
 
     StringBuilder resultMessage;
     StringBuilder resultWord;
@@ -125,9 +125,9 @@ public class LangTypos {
         try {
             dictRuToEn = mapper.readValue(new InputStreamReader(
                     Objects.requireNonNull(ClassLoader.getSystemClassLoader()
-                            .getResourceAsStream("dictRuToEn-mini.json"))), new TypeReference<HashMap<String, String>>() {
+                            .getResourceAsStream("dictRuToEn-mini-v2.json"))), new TypeReference<HashMap<String, String>>() {
             });
-            morfRuDict = new ArrayList<>();
+            morfRuDict = new HashSet<>();
             for (String key:dictRuToEn.keySet()) {
                 morfRuDict.add(Porter.stem(key));
             }

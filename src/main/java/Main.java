@@ -1,3 +1,6 @@
+import org.json.JSONObject;
+
+import java.io.*;
 import java.util.*;
 
 
@@ -21,7 +24,8 @@ public class Main {
             e.printStackTrace();
         }
 */
-     LangTypos converter = new LangTypos();
+
+     LangTypos_v2 converter = new LangTypos_v2();
      converter.loadDictionaries();
      //converter.viewDict();
 
@@ -106,8 +110,8 @@ public class Main {
 
 
 /*TODO:Работает
- */
-/*
+
+
         LangTypos converter = new LangTypos();
 
         Map<String,String> dict = new HashMap<>();
@@ -115,9 +119,7 @@ public class Main {
 
 
 
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(
-                Objects.requireNonNull(ClassLoader.getSystemClassLoader()
-                        .getResourceAsStream("zdf-win.txt"))))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("rusDict-new.txt"))) {
 
             String line;
 
@@ -133,7 +135,7 @@ public class Main {
         JSONObject jsonDict = new JSONObject(dict); // json
 
 
-        try (FileWriter file = new FileWriter("dictRuToEn-mini.json",false)) {
+        try (FileWriter file = new FileWriter("dictRuToEn-mini-v2.json",false)) {
 
             file.write(jsonDict.toString());
             file.flush();
