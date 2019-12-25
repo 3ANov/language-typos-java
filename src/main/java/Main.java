@@ -45,6 +45,9 @@ public class Main {
 
             //System.out.println(Porter.stem(message));
             //System.out.println(message.matches("[\\w|\\W]\\p{InCyrillic}"));
+            //System.out.println(!message.matches("(\\p{L1})*"));
+            //System.out.println(  message.replaceAll("\\p{P}",""));
+
             System.out.println(converter.convertString(message));
             System.out.println();
 

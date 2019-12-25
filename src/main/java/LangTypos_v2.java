@@ -188,10 +188,15 @@ public class LangTypos_v2 {
                 resultMessage.append(revLayout);
             }
 
-            else { // по идее не нужна - надо придумывать чтото со словообразованием
-                //если слово найдено в словаре словообразования - вернуть его в другой кодировке
-                if(morfRuDict.contains(Porter.stem(revLayout))){
-                    resultMessage.append(revLayout);
+            else {
+                if(!revLayout.matches("(\\p{L1})*")){
+                    if(morfRuDict.contains(Porter.stem(revLayout.replaceAll("(\\p{P}*)","")))){
+                        resultMessage.append(revLayout);
+                    }
+                    else {
+                        resultMessage.append(word);
+                    }
+
                 }
                 else {
                     resultMessage.append(word);
@@ -205,9 +210,6 @@ public class LangTypos_v2 {
         return resultMessage.toString().trim();
     }
 
-
-
-    /*как было до*/
 
 
 
