@@ -37,4 +37,4 @@ converter.convertString("многоточие это pyfr ghtgbyfybz") // return
 ## Что есть ещё 
 По мере создания программы были сгенерированы словари в формате json содержащие слова в русской и английской расскладке. Словарь **dictRuToEn-mini.json** содержит пары типа: _"песочить":"gtcjxbnm", "рукаводержатель":"herfdjlth;fntkm"_. Словарь **dictEnToRu.json** содержит пары типа: _"frowning":"акщцтштп","undermining":"гтвукьштштп"_. Словарь **dictRuToEn.json** содержит более чем 2 376 434 словоформ в паре с версией в английской расскладке[ссылка](https://dikmax.name/post/russian-dictionary/).
 
-### По вопросам можете писать на почту: 3anovdev@gmail.com
+### По всяким вопросам, можете писать на мою почту: 3anovdev@gmail.com
