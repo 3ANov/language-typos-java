@@ -1,4 +1,4 @@
-# language-typos-java - исправление расскладки текста (реализация на Java)
+# language-typos-java - исправление раскладки текста (реализация на Java)
 
 [Класс](https://github.com/3ANov/language-typos-java/blob/master/src/main/java/LangTypos_v2.java) исправляющий раскладку текста который содержит английские и русские слова.
 
