@@ -1,6 +1,6 @@
 # language-typos-java - исправление расскладки текста (реализация на Java)
 
-Класс исправляющий раскладку текста который содержит английские и русские слова.
+[Класс](https://github.com/3ANov/language-typos-java/blob/master/src/main/java/LangTypos_v2.java) исправляющий раскладку текста который содержит английские и русские слова.
 
 _Идеи были заимствованы из:_
 * _[github.com/rin-nas/language-typos](https://github.com/rin-nas/language-typos)_
