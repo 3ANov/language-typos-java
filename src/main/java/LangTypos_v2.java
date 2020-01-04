@@ -127,7 +127,7 @@ public class LangTypos_v2 {
      * english.txt - словарь английских слов (загрузка произодится из папки ресурсов)
      *
      * загрузка словарей производится из папки ресурсов (resources)
-     * 
+     *
      */
 
     public void loadDictionaries() {
