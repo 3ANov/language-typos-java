@@ -181,10 +181,10 @@ public class LangTypos_v2 {
 
             String revLayout = convertLayout(word);
             //если слово в правильной расскладке найдено в словарях по ключу
-            if (dictRu.contains(word.toLowerCase()) || dictEn.contains(word.toLowerCase())) {
+            if (dictRu.contains(word.toLowerCase()) || dictEn.contains(word.toLowerCase()) || dictEn.contains(word)) {
                 resultMessage.append(word);//то возвращаем его без изменений
             }
-            else if(dictRu.contains(revLayout.toLowerCase()) || dictEn.contains(revLayout.toLowerCase())){
+            else if(dictRu.contains(revLayout.toLowerCase()) || dictEn.contains(revLayout.toLowerCase()) || dictEn.contains(revLayout)){
                 resultMessage.append(revLayout);
             }
 

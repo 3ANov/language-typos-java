@@ -1,3 +1,6 @@
+import javafx.scene.Node;
+import javafx.util.Pair;
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONObject;
 
 import java.io.*;
@@ -28,7 +31,7 @@ public class Main {
      LangTypos_v2 converter = new LangTypos_v2();
      converter.loadDictionaries();
      //converter.viewDict();
-
+        ArrayDeque<String> errorStrings = new ArrayDeque(10);
 
 
         Scanner input = new Scanner(System.in);
@@ -48,12 +51,20 @@ public class Main {
             //System.out.println(!message.matches("(\\p{L1})*"));
             //System.out.println(  message.replaceAll("\\p{P}",""));
 
+            if(!message.equals(converter.convertString(message))){
+                errorStrings.push(converter.convertString(message));
+            }
+
             System.out.println(converter.convertString(message));
             System.out.println();
 
 
 
 
+        }
+
+        for (String s:errorStrings) {
+            System.out.println(s);
         }
 
 
