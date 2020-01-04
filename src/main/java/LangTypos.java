@@ -18,6 +18,16 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+/** Класс для исправления раскладки текста содержащего русские и английские слова.
+ * Использует проверку по словарям
+ * Работает с ошибками и требует много памяти(>1 гб)
+ * Словари содержат слова в русской и английской раскладке в формате json
+ *
+ *
+ * @author 3ANov
+ * Мой e-mail: <a href="mailto:3anovdev@gmail.com">3anovdev@gmail.com</a>
+ */
 public class LangTypos {
 
 

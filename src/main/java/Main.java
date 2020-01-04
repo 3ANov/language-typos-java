@@ -27,9 +27,12 @@ public class Main {
             e.printStackTrace();
         }
 */
+        /** Использование класса который автоматически исправляет расскладку
+         */
 
-     LangTypos_v2 converter = new LangTypos_v2();
-     converter.loadDictionaries();
+
+     LangTypos_v2 converter = new LangTypos_v2(); /** создаём объект класса */
+     converter.loadDictionaries(); /** загружаем словари */
      //converter.viewDict();
         ArrayDeque<String> errorStrings = new ArrayDeque(10);
 
@@ -55,7 +58,7 @@ public class Main {
                 errorStrings.push(converter.convertString(message));
             }
 
-            System.out.println(converter.convertString(message));
+            System.out.println(converter.convertString(message));//
             System.out.println();
 
 

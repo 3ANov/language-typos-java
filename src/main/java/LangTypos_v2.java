@@ -1,5 +1,3 @@
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 
@@ -7,11 +5,17 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Objects;
 
+/** Класс для исправления раскладки текста содержащего русские и английские слова.
+ * Использует проверку по словарям и алгоритм стемминга Портера
+ * @see <a href="https://github.com/vpominchuk/StemmerPorterRU">реализация алгоритма стеммера Портера на java</a>
+ *
+ *
+ * @author 3ANov
+ * Мой e-mail: <a href="mailto:3anovdev@gmail.com">3anovdev@gmail.com</a>
+ */
 public class LangTypos_v2 {
 
 
@@ -21,12 +25,16 @@ public class LangTypos_v2 {
     HashSet<String> dictRu;
     HashSet<String> dictEn;
 
-    HashSet<String> morfRuDict;
+    HashSet<String> morfRuDict;/** используется в {@link #convertString(String)} */
 
-    StringBuilder resultMessage;
-    StringBuilder resultWord;
+    /** Выделил отдельно StringBuilder'ы чтобы их не пересоздавали методы,
+     * но возможно будет удобней оставить это всё в методах */
+    StringBuilder resultMessage;/** используется в {@link #convertString(String)} */
+    StringBuilder resultWord;/** используется в {@link #mirrorLayout(String)} */
 
-
+    /** Основной конструктор класса - сопоставляет английские и русские символы
+     *
+     */
     public LangTypos_v2() {
         enToRus = HashBiMap.create();
         enToRus.put('`', 'ё');
@@ -113,6 +121,13 @@ public class LangTypos_v2 {
 
     }
 
+    /**Загрузка словарей
+     * Сделано отдельно - потому что занимает достаточно много памяти
+     * rusDict-new.txt - русский словарь (загрузка произодится из папки ресурсов)
+     * english.txt - словарь английских слов (загрузка произодится из папки ресурсов)
+     *
+     */
+
     public void loadDictionaries() {
         dictRu = new HashSet<>();
         dictEn = new HashSet<>();
@@ -156,8 +171,13 @@ public class LangTypos_v2 {
 
     }
 
-    public String convertLayout(String string) {
-
+    /**
+     *
+     * @param string входная строка которую нужно "отразить" в другой расскладке
+     * @return возвращается строка в "зеркальной" раскладке
+     * example: "многоточие" -> "vyjujnjxbt"
+     */
+    public String mirrorLayout(String string) {
 
         resultWord.delete(0, resultWord.length());
         for (int i = 0; i < string.length(); i++) {
@@ -173,13 +193,22 @@ public class LangTypos_v2 {
         return resultWord.toString();
     }
 
+    /**Метод который исправляет расскладку (если текст содержит русские или английские слова)
+     * В основе проверка по словарям английских и русских слов + проверка слов через алгоритм стемминга Портера
+     *
+     * @param message Входная строка раскладку которой нужно исправить
+     * @return Выходная строка с "исправленной" раскладкой
+     * example: "многоточие это знак препинания" -> "vyjujnjxbt 'nj pyfr ghtgbyfybz"
+     * example: "многоточие это pyfr ghtgbyfybz" -> "многоточие это знак препинания"
+     */
+
     public String convertString(String message) {
 
         resultMessage.delete(0, resultMessage.length());
 
         for (String word : message.split(" ")) {
 
-            String revLayout = convertLayout(word);
+            String revLayout = mirrorLayout(word);
             //если слово в правильной расскладке найдено в словарях по ключу
             if (dictRu.contains(word.toLowerCase()) || dictEn.contains(word.toLowerCase()) || dictEn.contains(word)) {
                 resultMessage.append(word);//то возвращаем его без изменений
@@ -189,8 +218,11 @@ public class LangTypos_v2 {
             }
 
             else {
-                if(!revLayout.matches("(\\p{L1})*")){
-                    if(morfRuDict.contains(Porter.stem(revLayout.replaceAll("(\\p{P}*)","")))){
+                //проверка для слов которые запсаны вместе со знаками препинания
+                if(!revLayout.matches("(\\p{L1})*")){//отдельная проверка для русских символов е
+                    // (пришлось использовать инвертированное условие проверки
+                    if(morfRuDict.contains(Porter.stem(revLayout.replaceAll("(\\p{P}*)","")))){ //проверка слова без знаков
+                        // с использование алгорима стемминга Портера
                         resultMessage.append(revLayout);
                     }
                     else {
