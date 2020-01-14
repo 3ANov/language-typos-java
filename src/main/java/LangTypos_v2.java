@@ -19,13 +19,13 @@ import java.util.Objects;
 public class LangTypos_v2 {
 
 
-    BiMap<Character, Character> enToRus;
-    BiMap<Character, Character> rusToEn;
+    BiMap<Character, Character> enToRusBiMap;
+    BiMap<Character, Character> rusToEnBiMap;
 
-    HashSet<String> dictRu;
-    HashSet<String> dictEn;
+    HashSet<String> russianDictionary;
+    HashSet<String> englishDictionary;
 
-    HashSet<String> morfRuDict;/** используется в {@link #convertString(String)} */
+    HashSet<String> morFormRussianDictionary;/** используется в {@link #convertString(String)} */
 
     /** Выделил отдельно StringBuilder'ы чтобы их не пересоздавали методы,
      * но возможно будет удобней оставить это всё в методах */
@@ -36,84 +36,84 @@ public class LangTypos_v2 {
      *
      */
     public LangTypos_v2() {
-        enToRus = HashBiMap.create();
-        enToRus.put('`', 'ё');
-        enToRus.put('q', 'й');
-        enToRus.put('w', 'ц');
-        enToRus.put('e', 'у');
-        enToRus.put('r', 'к');
-        enToRus.put('t', 'е');
-        enToRus.put('y', 'н');
-        enToRus.put('u', 'г');
-        enToRus.put('i', 'ш');
-        enToRus.put('o', 'щ');
-        enToRus.put('p', 'з');
-        enToRus.put('[', 'х');
-        enToRus.put(']', 'ъ');
-        enToRus.put('a', 'ф');
-        enToRus.put('s', 'ы');
-        enToRus.put('d', 'в');
-        enToRus.put('f', 'а');
-        enToRus.put('g', 'п');
-        enToRus.put('h', 'р');
-        enToRus.put('j', 'о');
-        enToRus.put('k', 'л');
-        enToRus.put('l', 'д');
-        enToRus.put(';', 'ж');
-        enToRus.put('\'', 'э');
-        enToRus.put('z', 'я');
-        enToRus.put('x', 'ч');
-        enToRus.put('c', 'с');
-        enToRus.put('v', 'м');
-        enToRus.put('b', 'и');
-        enToRus.put('n', 'т');
-        enToRus.put('m', 'ь');
-        enToRus.put(',', 'б');
-        enToRus.put('.', 'ю');
-        enToRus.put('/', '.');
-        enToRus.put('~', 'Ё');
-        enToRus.put('@', '"');
-        enToRus.put('#', '№');
-        enToRus.put('$', ';');
-        enToRus.put('^', ':');
-        enToRus.put('&', '?');
-        enToRus.put('|', '/');
-        enToRus.put('Q', 'Й');
-        enToRus.put('W', 'Ц');
-        enToRus.put('E', 'У');
-        enToRus.put('R', 'К');
-        enToRus.put('T', 'Е');
-        enToRus.put('Y', 'Н');
-        enToRus.put('U', 'Г');
-        enToRus.put('I', 'Ш');
-        enToRus.put('O', 'Щ');
-        enToRus.put('P', 'З');
-        enToRus.put('{', 'Х');
-        enToRus.put('}', 'Ъ');
-        enToRus.put('A', 'Ф');
-        enToRus.put('S', 'Ы');
-        enToRus.put('D', 'В');
-        enToRus.put('F', 'А');
-        enToRus.put('G', 'П');
-        enToRus.put('H', 'Р');
-        enToRus.put('J', 'О');
-        enToRus.put('K', 'Л');
-        enToRus.put('L', 'Д');
-        enToRus.put(':', 'Ж');
-        enToRus.put('"', 'Э');
-        enToRus.put('Z', 'Я');
-        enToRus.put('X', 'Ч');
-        enToRus.put('C', 'С');
-        enToRus.put('V', 'М');
-        enToRus.put('B', 'И');
-        enToRus.put('N', 'Т');
-        enToRus.put('M', 'Ь');
-        enToRus.put('<', 'Б');
-        enToRus.put('>', 'Ю');
-        enToRus.put('?', ',');
-        enToRus.put(' ', ' ');
+        enToRusBiMap = HashBiMap.create();
+        enToRusBiMap.put('`', 'ё');
+        enToRusBiMap.put('q', 'й');
+        enToRusBiMap.put('w', 'ц');
+        enToRusBiMap.put('e', 'у');
+        enToRusBiMap.put('r', 'к');
+        enToRusBiMap.put('t', 'е');
+        enToRusBiMap.put('y', 'н');
+        enToRusBiMap.put('u', 'г');
+        enToRusBiMap.put('i', 'ш');
+        enToRusBiMap.put('o', 'щ');
+        enToRusBiMap.put('p', 'з');
+        enToRusBiMap.put('[', 'х');
+        enToRusBiMap.put(']', 'ъ');
+        enToRusBiMap.put('a', 'ф');
+        enToRusBiMap.put('s', 'ы');
+        enToRusBiMap.put('d', 'в');
+        enToRusBiMap.put('f', 'а');
+        enToRusBiMap.put('g', 'п');
+        enToRusBiMap.put('h', 'р');
+        enToRusBiMap.put('j', 'о');
+        enToRusBiMap.put('k', 'л');
+        enToRusBiMap.put('l', 'д');
+        enToRusBiMap.put(';', 'ж');
+        enToRusBiMap.put('\'', 'э');
+        enToRusBiMap.put('z', 'я');
+        enToRusBiMap.put('x', 'ч');
+        enToRusBiMap.put('c', 'с');
+        enToRusBiMap.put('v', 'м');
+        enToRusBiMap.put('b', 'и');
+        enToRusBiMap.put('n', 'т');
+        enToRusBiMap.put('m', 'ь');
+        enToRusBiMap.put(',', 'б');
+        enToRusBiMap.put('.', 'ю');
+        enToRusBiMap.put('/', '.');
+        enToRusBiMap.put('~', 'Ё');
+        enToRusBiMap.put('@', '"');
+        enToRusBiMap.put('#', '№');
+        enToRusBiMap.put('$', ';');
+        enToRusBiMap.put('^', ':');
+        enToRusBiMap.put('&', '?');
+        enToRusBiMap.put('|', '/');
+        enToRusBiMap.put('Q', 'Й');
+        enToRusBiMap.put('W', 'Ц');
+        enToRusBiMap.put('E', 'У');
+        enToRusBiMap.put('R', 'К');
+        enToRusBiMap.put('T', 'Е');
+        enToRusBiMap.put('Y', 'Н');
+        enToRusBiMap.put('U', 'Г');
+        enToRusBiMap.put('I', 'Ш');
+        enToRusBiMap.put('O', 'Щ');
+        enToRusBiMap.put('P', 'З');
+        enToRusBiMap.put('{', 'Х');
+        enToRusBiMap.put('}', 'Ъ');
+        enToRusBiMap.put('A', 'Ф');
+        enToRusBiMap.put('S', 'Ы');
+        enToRusBiMap.put('D', 'В');
+        enToRusBiMap.put('F', 'А');
+        enToRusBiMap.put('G', 'П');
+        enToRusBiMap.put('H', 'Р');
+        enToRusBiMap.put('J', 'О');
+        enToRusBiMap.put('K', 'Л');
+        enToRusBiMap.put('L', 'Д');
+        enToRusBiMap.put(':', 'Ж');
+        enToRusBiMap.put('"', 'Э');
+        enToRusBiMap.put('Z', 'Я');
+        enToRusBiMap.put('X', 'Ч');
+        enToRusBiMap.put('C', 'С');
+        enToRusBiMap.put('V', 'М');
+        enToRusBiMap.put('B', 'И');
+        enToRusBiMap.put('N', 'Т');
+        enToRusBiMap.put('M', 'Ь');
+        enToRusBiMap.put('<', 'Б');
+        enToRusBiMap.put('>', 'Ю');
+        enToRusBiMap.put('?', ',');
+        enToRusBiMap.put(' ', ' ');
 
-        rusToEn = enToRus.inverse();
+        rusToEnBiMap = enToRusBiMap.inverse();
 
         resultMessage = new StringBuilder();
         resultWord = new StringBuilder();
@@ -131,8 +131,8 @@ public class LangTypos_v2 {
      */
 
     public void loadDictionaries() {
-        dictRu = new HashSet<>();
-        dictEn = new HashSet<>();
+        russianDictionary = new HashSet<>();
+        englishDictionary = new HashSet<>();
         try (BufferedReader br = new BufferedReader(new InputStreamReader(
                 Objects.requireNonNull(ClassLoader.getSystemClassLoader()
                         .getResourceAsStream("rusDict-new.txt"))))) {
@@ -140,7 +140,7 @@ public class LangTypos_v2 {
             String line;
             while ((line = br.readLine()) != null) {
 
-               dictRu.add(line);
+               russianDictionary.add(line);
 
             }
         } catch (FileNotFoundException e) {
@@ -156,7 +156,7 @@ public class LangTypos_v2 {
             String line;
             while ((line = br.readLine()) != null) {
 
-                dictEn.add(line);
+                englishDictionary.add(line);
 
             }
         } catch (FileNotFoundException e) {
@@ -166,9 +166,9 @@ public class LangTypos_v2 {
         }
 
 
-        morfRuDict = new HashSet<>();
-        for (String key:dictRu) {
-            morfRuDict.add(Porter.stem(key));
+        morFormRussianDictionary = new HashSet<>();
+        for (String key: russianDictionary) {
+            morFormRussianDictionary.add(Porter.stem(key));
         }
 
     }
@@ -180,13 +180,13 @@ public class LangTypos_v2 {
      * example: "многоточие" -> "vyjujnjxbt"
      */
     public String mirrorLayout(String string) {
-
+        
         resultWord.delete(0, resultWord.length());
         for (int i = 0; i < string.length(); i++) {
-            if (enToRus.containsKey(string.charAt(i))) {
-                resultWord.append(enToRus.get(string.charAt(i)));
-            } else if (rusToEn.containsKey(string.charAt(i))) {
-                resultWord.append(rusToEn.get(string.charAt(i)));
+            if (enToRusBiMap.containsKey(string.charAt(i))) {
+                resultWord.append(enToRusBiMap.get(string.charAt(i)));
+            } else if (rusToEnBiMap.containsKey(string.charAt(i))) {
+                resultWord.append(rusToEnBiMap.get(string.charAt(i)));
             } else {
                 resultWord.append(string.charAt(i));
             }
@@ -212,10 +212,10 @@ public class LangTypos_v2 {
 
             String revLayout = mirrorLayout(word);
             //если слово в правильной расскладке найдено в словарях по ключу
-            if (dictRu.contains(word.toLowerCase()) || dictEn.contains(word.toLowerCase()) || dictEn.contains(word)) {
+            if (russianDictionary.contains(word.toLowerCase()) || englishDictionary.contains(word.toLowerCase()) || englishDictionary.contains(word)) {
                 resultMessage.append(word);//то возвращаем его без изменений
             }
-            else if(dictRu.contains(revLayout.toLowerCase()) || dictEn.contains(revLayout.toLowerCase()) || dictEn.contains(revLayout)){
+            else if(russianDictionary.contains(revLayout.toLowerCase()) || englishDictionary.contains(revLayout.toLowerCase()) || englishDictionary.contains(revLayout)){
                 resultMessage.append(revLayout);
             }
 
@@ -223,7 +223,7 @@ public class LangTypos_v2 {
                 //проверка для слов которые запсаны вместе со знаками препинания
                 if(!revLayout.matches("(\\p{L1})*")){//отдельная проверка для русских символов е
                     // (пришлось использовать инвертированное условие проверки
-                    if(morfRuDict.contains(Porter.stem(revLayout.replaceAll("(\\p{P}*)","")))){ //проверка слова без знаков
+                    if(morFormRussianDictionary.contains(Porter.stem(revLayout.replaceAll("(\\p{P}*)","")))){ //проверка слова без знаков
                         // с использование алгорима стемминга Портера
                         resultMessage.append(revLayout);
                     }
