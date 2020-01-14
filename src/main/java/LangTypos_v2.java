@@ -180,7 +180,7 @@ public class LangTypos_v2 {
      * example: "многоточие" -> "vyjujnjxbt"
      */
     public String mirrorLayout(String string) {
-        
+
         resultWord.delete(0, resultWord.length());
         for (int i = 0; i < string.length(); i++) {
             if (enToRusBiMap.containsKey(string.charAt(i))) {
