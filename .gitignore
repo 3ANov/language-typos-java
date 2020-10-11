@@ -1,3 +1,4 @@
 # Project exclude paths
 /target/
 .idea
+language-typos-java.iml
